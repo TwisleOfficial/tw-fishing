@@ -1,3 +1,5 @@
+-- PT 1 & 2
+
 CREATE TABLE IF NOT EXISTS `tw_fishing` (
     `citizen_id` varchar(255) NOT NULL,
     `rep` float NOT NULL DEFAULT 0,
