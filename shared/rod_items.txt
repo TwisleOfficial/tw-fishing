@@ -1,0 +1,18 @@
+["fishing_rod1"] = {
+    label = "Fishing Rod 1",
+    weight = 50,
+    stack = false,
+    close = true,
+},
+["fishing_rod2"] = {
+    label = "Fishing Rod 2",
+    weight = 50,
+    stack = false,
+    close = true,
+},
+["fishing_rod3"] = {
+    label = "Fishing Rod 3",
+    weight = 50,
+    stack = false,
+    close = true,
+},
