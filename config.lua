@@ -2,20 +2,20 @@ Config = {}
 
 Config.Debug = true
 
-Config.Framework = 'qbx' -- qb, qbx, esx
+Config.Framework = 'qbx' -- qb, qbx
 
 Config.PedData = {
   model = `cs_hunter`,
   coords = vec4(-2077.74, 2604.29, 2.03, 291.25),
 
   target = {
-    label = 'Talk To The Fish Monger',
+    label = 'Speak With Fish Monger',
     icon = "fa-solid fa-comment"
   },
 
   blip = {
     enabled = true,
-    size = 0.65,
+    size = 1.0,
     sprite = 762,
     color = 0,
     title = 'Fish Monger'

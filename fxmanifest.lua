@@ -5,7 +5,6 @@ shared_scripts {
     '@ox_lib/init.lua',
 
     '@qbx_core/modules/lib.lua',     -- if you are using qbox make sure this isnt commented out
-    -- '@es_extended/imports.lua', -- if you are using esx make sure this isnt commented out
 
     'config.lua'
 }

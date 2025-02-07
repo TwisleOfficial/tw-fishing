@@ -1,5 +1,5 @@
 local managerPed
-local rod
+local rodObj
 
 local function createManagerPed()
   local pedData = Config.PedData
@@ -7,25 +7,21 @@ local function createManagerPed()
   RequestModel(pedData.model)
   while not HasModelLoaded(pedData.model) do
     Wait(1)
-    RequestModel()
-    dbug('Reuqesting : ' .. pedData.model)
+    RequestModel(pedData.model)
+    dbug('Requesting Model: ' .. pedData.model)
   end
 
-  managerPed = CreatePed(1, pedData.model, pedData.coords.x, pedData.coords.y, pedData.coords.z - 1, pedData.coords.w,
-    false, false
-  )
+  managerPed = CreatePed(1, pedData.model, pedData.coords.x, pedData.coords.y, pedData.coords.z - 1, pedData. coords.w, false, false)
   FreezeEntityPosition(managerPed, true)
   SetEntityInvincible(managerPed, true)
   SetBlockingOfNonTemporaryEvents(managerPed, true)
 
-
   local rodProp = `prop_fishing_rod_01`
-
   RequestModel(rodProp)
   while not HasModelLoaded(rodProp) do
     Wait(1)
     RequestModel(rodProp)
-    dbug("Requesting model: " .. rodProp)
+    dbug('Requesting Model: ' .. rodProp)
   end
 
   local animDict = 'amb@world_human_stand_fishing@idle_a'
@@ -33,13 +29,13 @@ local function createManagerPed()
   while not HasAnimDictLoaded(animDict) do
     Wait(1)
     RequestAnimDict(animDict)
-    dbug('Reuqesting : ' .. animDict)
+    dbug('Requesting Model: ' .. animDict)
   end
 
-  rod = CreateObject(rodProp, pedData.coords.x, pedData.coords.y, pedData.coords.z, false, false, false)
-  TaskPlayAnim(managerPed, animDict, "idle_b", 2.0, 2.0, -1, 51, 0, false, false, false)
-  AttachEntityToEntity(rod, managerPed, GetPedBoneIndex(managerPed, 60309), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
-    true, true, false, true, 1, true
+  TaskPlayAnim(managerPed, animDict, 'idle_b', 2.0, 2.0, -1, 51, 0, false, false, false)
+  rodObj = CreateObject(rodProp, pedData.coords.x, pedData.coords.y, pedData.coords.z, false, false, false)
+  AttachEntityToEntity(rodObj, managerPed, GetPedBoneIndex(managerPed, 60309), 0.0, 0.0, 0.0, 0.0, 0.0, 
+    0.0, true, true, false, true, 1, true
   )
 
 end
@@ -50,40 +46,37 @@ Citizen.CreateThread(function()
   exports.ox_target:addLocalEntity(managerPed, {
     {
       distance = 1.5,
-      name = "fishing_manager",
+      name = 'fishing_manager',
       icon = Config.PedData.target.icon,
       label = Config.PedData.target.label,
-      onSelect = function()
-        buildMangerContext()
-      end,
+      onSelect = function ()
+        BuildManagerContext()
+      end
     }
   })
 
   if Config.PedData.blip.enabled then
+    local blipData = Config.PedData.blip
     local blip = AddBlipForCoord(Config.PedData.coords.xyz)
-    SetBlipSprite(blip, Config.PedData.blip.sprite)
+    SetBlipSprite(blip, blipData.sprite)
     SetBlipDisplay(blip, 4)
-    SetBlipScale(blip, Config.PedData.blip.size)
-    SetBlipColour(blip, Config.PedData.blip.color)
-    SetBlipAsShortRange(blip, true)
-    SetBlipAlpha(blip, 255)
+    SetBlipScale(blip, blipData.size)
+    SetBlipColour(blip, blipData.color)
     BeginTextCommandSetBlipName("STRING")
-    AddTextComponentString(Config.PedData.blip.title)
+    AddTextComponentString(blipData.title)
     EndTextCommandSetBlipName(blip)
-    dbug('Blip Created!')
+    dbug('blip Created!')
   end
+
 end)
 
-RegisterNetEvent('tw-fishing:client:useRod', function (level)
-  dbug('used level ' .. level .. ' fishing rod')
+RegisterNetEvent('tw-fishing:client:useRod', function(level)
+  dbug('used a level ' .. level .. ' rod!')
 end)
 
 AddEventHandler('onResourceStop', function(resource)
-   if resource ~= GetCurrentResourceName() then
-      return
-   end
+  if resource ~= GetCurrentResourceName() then return end
 
-  DeleteObject(rod)
-  DeleteObject(managerPed)
+  DeleteObject(rodObj)
 
 end)
